@@ -12,6 +12,6 @@ namespace fms
         DataGearLActual = 106701, // 0 - up, 1 - down
         DataGearRActual = 106702, // 0 - up, 1 - down
         SoundLandGearHorn = 190375, // 0 - dont play, 1 - play
-        SilenceLandGearHornBtn = 200101, // 0 - not pressed, 1 - pressed
+        SilenceLandGearHornBtn = 200101 // 0 - not pressed, 1 - pressed
     }
 }

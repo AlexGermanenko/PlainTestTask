@@ -7,11 +7,11 @@ namespace fms
 {
     internal class Program
     {
-        private static readonly Random rnd = new Random();
+        private static readonly Random _rnd = new Random();
 
         private static void Main(string[] args)
         {
-            var lgs = new LandingGearSystem();
+            BaseSystem lgs = new LandingGearSystem();
             var state = new Dictionary<Oid, float>
             {
                 {DataRadioAltitude, 1000},
@@ -38,7 +38,7 @@ namespace fms
                 else
                     state[DataRadioAltitude] += 5;
 
-                Thread.Sleep(rnd.Next(30, 60));
+                Thread.Sleep(_rnd.Next(30, 60));
             }
         }
     }

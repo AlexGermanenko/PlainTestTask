@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace fms
 {
-    // here we can create common things like timer
-
     public abstract class BaseSystem
     {
         protected double elapsedMilliseconds = 0;
