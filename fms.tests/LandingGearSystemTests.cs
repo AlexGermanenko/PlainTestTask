@@ -163,5 +163,82 @@ namespace fms.tests
             Assert.Equal(0, result);
 
         }
+
+        [Fact]
+        public void Altitude_X()
+        {
+            BaseSystem lgs = new LandingGearSystem();
+            var state = new Dictionary<Oid, float>
+            {
+                {DataRadioAltitude, 700},
+                {DataEng1, 1},
+                {DataEng2, 1},
+                {ThrottleFlapsSel, 5},
+                {ThrottleLeverAngle1, 5},
+                {ThrottleLeverAngle2, 5},
+                {DataGearNActual, 0},
+                {DataGearLActual, 0},
+                {DataGearRActual, 0},
+                {SoundLandGearHorn, 0}
+            };
+
+            lgs.Process(1, state);
+
+            var result = state[SoundLandGearHorn];
+
+            Assert.Equal(1, result);
+        }
+
+        [Fact]
+        public void SilenceHornBtn_X()
+        {
+            BaseSystem lgs = new LandingGearSystem();
+            var state = new Dictionary<Oid, float>
+            {
+                {DataRadioAltitude, 700},
+                {DataEng1, 1},
+                {DataEng2, 1},
+                {ThrottleFlapsSel, 5},
+                {ThrottleLeverAngle1, 5},
+                {ThrottleLeverAngle2, 5},
+                {DataGearNActual, 0},
+                {DataGearLActual, 0},
+                {DataGearRActual, 0},
+                {SoundLandGearHorn, 0},
+                {SilenceLandGearHornBtn, 1}
+            };
+
+            lgs.Process(1, state);
+            lgs.Process(1, state);
+
+            var result = state[SoundLandGearHorn];
+
+            Assert.Equal(0, result);
+        }
+
+        [Fact]
+        public void EngineINOP_ButGearIsDown_X()
+        {
+            BaseSystem lgs = new LandingGearSystem();
+            var state = new Dictionary<Oid, float>
+            {
+                {DataRadioAltitude, 700},
+                {DataEng1, 0},
+                {DataEng2, 1},
+                {ThrottleFlapsSel, 5},
+                {ThrottleLeverAngle1, 5},
+                {ThrottleLeverAngle2, 5},
+                {DataGearNActual, 1},
+                {DataGearLActual, 1},
+                {DataGearRActual, 1},
+                {SoundLandGearHorn, 0}
+            };
+
+            lgs.Process(1, state);
+
+            var result = state[SoundLandGearHorn];
+
+            Assert.Equal(0, result);
+        }
     }
 }

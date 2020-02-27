@@ -15,6 +15,7 @@ namespace fms
         private bool _isTLAlessThan20;
         private bool _isTLAlessThan34;
         private bool _isFlapsMoreThan25;
+        private bool _isLandingGearDown;
 
 
         protected override void ProcessState(Dictionary<Oid, float> state)
@@ -27,11 +28,15 @@ namespace fms
             var SilenceHornBtn = state.ContainsKey(Oid.SilenceLandGearHornBtn)? state[Oid.SilenceLandGearHornBtn]: 0;
             bool isSilenceHornButtonDown = SilenceHornBtn == 1;
 
-            if ((isFlapsAndAltitudeOutOfRange && isTLAoutOfRange || _isFlapsMoreThan25))
+            if ((isFlapsAndAltitudeOutOfRange && isTLAoutOfRange || _isFlapsMoreThan25) && !_isLandingGearDown)
             {
                 if (!isSilenceHornButtonDown || (isSilenceHornButtonDown && _isStateChanged))
                 {
                     state[Oid.SoundLandGearHorn] = 1;
+                }
+                else
+                {
+                    state[Oid.SoundLandGearHorn] = 0;
                 }
             }
             else 
@@ -89,6 +94,11 @@ namespace fms
             {
                 _isStateChanged = true;
                 _isTLAlessThan34 = Math.Max(tla1, tla2) < 34;
+            }
+
+            if (_isLandingGearDown != (state[Oid.DataGearLActual] == 1 && state[Oid.DataGearNActual] == 1 && state[Oid.DataGearRActual] == 1))
+            {
+                _isLandingGearDown = state[Oid.DataGearLActual] == 1 && state[Oid.DataGearNActual] == 1 && state[Oid.DataGearRActual] == 1;
             }
 
             var SilenceHornBtn = state.ContainsKey(Oid.SilenceLandGearHornBtn) ? state[Oid.SilenceLandGearHornBtn] : 0;
